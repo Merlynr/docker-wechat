@@ -1,4 +1,4 @@
-FROM ricwang/docker-wechat:base
+FROM merlynr/docker-wechat:base
     
 # 下载微信安装包
 RUN curl -O "https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.deb" && \
