@@ -50,7 +50,7 @@ jobs:
         FULL_IMAGE_NAME="${{ secrets.DOCKER_REPOSITORY }}/${{ secrets.DOCKER_IMAGE_NAME }}"
         
         # 标记镜像
-        docker tag temp-image $FULL_IMAGE_NAME:$VERSION
+        docker tag temp-image $FULL_IMAGE_NAME:base
         docker tag temp-image $FULL_IMAGE_NAME:latest
         
         # 推送镜像
