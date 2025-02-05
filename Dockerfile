@@ -4,6 +4,7 @@ FROM merlynr/docker-wechat:base
 RUN apt-get update && \
     apt-get install -y \
     curl \
+    im-config \
     fcitx \
     fcitx-config-gtk \
     dbus-x11 \
