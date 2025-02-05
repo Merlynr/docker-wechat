@@ -1,7 +1,7 @@
 FROM merlynr/docker-wechat:base
 
 # 安装中文输入法（fcitx + sogoupinyin）
-RUN apt-get update \
+RUN apt-get update && \
     apt-get install -y \
     fcitx \
     fcitx-sogoupinyin \
