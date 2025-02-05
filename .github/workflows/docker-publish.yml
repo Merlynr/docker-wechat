@@ -16,8 +16,6 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-      with:
-        submodules: true  # Ensure submodules are checked out
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v3
@@ -26,16 +24,18 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         
     - name: Build image
-      run: 
+      run: |
         docker build --no-cache -t temp-image .
         
     - name: Extract version
       id: version
-      run: 
+      run: |
+        # 从新构建的镜像中提取版本号
         NEW_VERSION=$(docker run --rm temp-image cat /etc/cont-env.d/APP_VERSION)
         echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
         
         FULL_IMAGE_NAME="${{ secrets.DOCKER_REPOSITORY }}/${{ secrets.DOCKER_IMAGE_NAME }}"
+        # 尝试拉取最新镜像获取旧版本号
         if docker pull $FULL_IMAGE_NAME:latest 2>/dev/null; then
           OLD_VERSION=$(docker run --rm $FULL_IMAGE_NAME:latest cat /etc/cont-env.d/APP_VERSION)
         else
@@ -45,13 +45,15 @@ jobs:
         
     - name: Push image if version changed
       if: steps.version.outputs.new_version != steps.version.outputs.old_version
-      run: 
+      run: |
         VERSION="${{ steps.version.outputs.new_version }}"
         FULL_IMAGE_NAME="${{ secrets.DOCKER_REPOSITORY }}/${{ secrets.DOCKER_IMAGE_NAME }}"
         
+        # 标记镜像
         docker tag temp-image $FULL_IMAGE_NAME:$VERSION
         docker tag temp-image $FULL_IMAGE_NAME:latest
         
+        # 推送镜像
         docker push $FULL_IMAGE_NAME:$VERSION
         docker push $FULL_IMAGE_NAME:latest
         
