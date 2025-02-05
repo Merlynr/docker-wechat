@@ -1,7 +1,5 @@
 FROM merlynr/docker-wechat:base
 
-FROM ubuntu:20.04
-
 # 安装必要的依赖
 RUN apt-get update && \
     apt-get install -y \
@@ -14,9 +12,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # 下载微信安装包
-RUN curl -O "https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_LoongArch.deb" && \
-    dpkg -i WeChatLinux_LoongArch.deb 2>&1 | tee /tmp/wechat_install.log && \
-    rm WeChatLinux_LoongArch.deb
+RUN curl -O "https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.deb" && \
+    dpkg -i WeChatLinux_x86_64.deb 2>&1 | tee /tmp/wechat_install.log && \
+    rm WeChatLinux_x86_64.deb
 
 # 下载搜狗拼音输入法的 deb 文件
 RUN curl -O "https://ime-sec.gtimg.com/202502051746/2a563b2547c239f2d6ab02bc3165779d/pc/dl/gzindex/1680521801/sogoupinyin_4.2.1.145_loongarch64.deb"
