@@ -1,40 +1,50 @@
-FROM ricwang/docker-wechat:base
+FROM merlynr/docker-wechat:base
 
-# 下载微信安装包
-RUN curl -O "https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.deb" && \
-    dpkg -i WeChatLinux_x86_64.deb 2>&1 | tee /tmp/wechat_install.log && \
-    rm WeChatLinux_x86_64.deb
+FROM ubuntu:20.04
 
-RUN echo '#!/bin/sh' > /startapp.sh && \
-    echo 'exec /usr/bin/wechat' >> /startapp.sh && \
-    chmod +x /startapp.sh
-
-VOLUME /root/.xwechat
-VOLUME /root/xwechat_files
-VOLUME /root/downloads
-
-# 配置微信版本号
-RUN set-cont-env APP_VERSION "$(grep -o 'Unpacking wechat ([0-9.]*)' /tmp/wechat_install.log | sed 's/Unpacking wechat (\(.*\))/\1/')"
-
-# 安装中文输入法（fcitx + sogoupinyin）
-RUN apt-get install -y \
+# 安装必要的依赖
+RUN apt-get update && \
+    apt-get install -y \
+    curl \
     fcitx \
-    fcitx-sogoupinyin \
-    fcitx-module-dbus \
     fcitx-config-gtk \
     dbus-x11 \
     --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# 设置环境变量
-ENV GTK_IM_MODULE=fcitx
-ENV QT_IM_MODULE=fcitx
-ENV XMODIFIERS=@im=fcitx
+# 下载微信安装包
+RUN curl -O "https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.deb" && \
+    dpkg -i WeChatLinux_x86_64.deb 2>&1 | tee /tmp/wechat_install.log && \
+    rm WeChatLinux_x86_64.deb
 
-# 启动脚本
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
+# 下载搜狗拼音输入法的 deb 文件
+RUN curl -O "https://cdn2.ime.sogou.com/dl/index/1634226796/sogoupinyin_4.0.1.2562_amd64.deb"
 
-# 设置入口点
-ENTRYPOINT ["/start.sh"]
+# 安装搜狗拼音输入法
+RUN dpkg -i sogoupinyin_4.0.1.2562_amd64.deb || apt-get install -f -y && \
+    rm -f sogoupinyin_4.0.1.2562_amd64.deb
+
+# 配置输入法
+RUN im-config -n fcitx && \
+    fcitx-configtool
+
+# 创建启动脚本
+RUN echo '#!/bin/sh' > /startapp.sh && \
+    echo 'fcitx &' >> /startapp.sh && \
+    echo 'exec /usr/bin/wechat' >> /startapp.sh && \
+    chmod +x /startapp.sh
+
+# 挂载卷
+VOLUME /root/.xwechat
+VOLUME /root/xwechat_files
+VOLUME /root/downloads
+
+# 配置微信版本号（可选）
+RUN set-cont-env APP_VERSION "$(grep -o 'Unpacking wechat ([0-9.]*)' /tmp/wechat_install.log | sed 's/Unpacking wechat (\(.*\))/\1/')"
+
+# 暴露端口（如果需要）
+EXPOSE 5900
+
+# 启动容器时运行的命令
+CMD ["/startapp.sh"]
