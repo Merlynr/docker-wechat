@@ -9,7 +9,6 @@ RUN apt-get install -y \
     fcitx-frontend-all \
     fcitx-ui-classic \
     fcitx-dbus-status \
-    libdbus-1-3 \
     dbus-x11 \
     --no-install-recommends && \
     apt-get clean && \
@@ -19,7 +18,8 @@ RUN apt-get install -y \
 ENV DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus \
     GTK_IM_MODULE=fcitx \
     QT_IM_MODULE=fcitx \
-    XMODIFIERS=@im=fcitx
+    XMODIFIERS=@im=fcitx \
+    LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 
 # 启动 dbus 服务
 RUN mkdir -p /var/run/dbus && \
