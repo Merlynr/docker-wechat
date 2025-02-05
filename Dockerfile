@@ -1,4 +1,4 @@
-FROM merlynr/docker-wechat:base
+FROM merlynr/docker-wechat:4.0.1.11
 
 # 安装中文输入法（fcitx + sogoupinyin）
 RUN apt-get update && \
