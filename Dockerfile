@@ -24,6 +24,6 @@ RUN apt update && \
 RUN APP_ICON_URL=https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico  
 
 # install_app_icon.sh "$APP_ICON_URL"
-RUN APP_VERSION=base    
+RUN set-cont-env APP_VERSION "base"    
 # 设置应用名称
 RUN set-cont-env APP_NAME "Wechat"
