@@ -25,7 +25,7 @@
 ```
 services:
   wechat:
-    image: ricwang/docker-wechat:latest
+    image: merlynr/docker-wechat:latest
     container_name: wechat_container
     volumes:
       - <THE PATH>/.xwechat:/root/.xwechat
@@ -60,7 +60,7 @@ docker run -d \
  -e WEB_AUDIO=1 \
  -e TZ=Asia/Shanghai \
  --privileged \
- ricwang/docker-wechat:latest
+ merlynr/docker-wechat:latest
 ```
 
 # 演示：
@@ -72,11 +72,11 @@ https://youtu.be/1zqcNArcZBA
   <source
     media="(prefers-color-scheme: dark)"
     srcset="
-      https://api.star-history.com/svg?repos=RICwang/docker-wechat&type=Date&theme=dark
+      https://api.star-history.com/svg?repos=merlynr/docker-wechat&type=Date&theme=dark
     "
   />
   <img
     alt="Star History Chart"
-    src="https://api.star-history.com/svg?repos=RICwang/docker-wechat&type=Date"
+    src="https://api.star-history.com/svg?repos=merlynr/docker-wechat&type=Date"
   />
 </picture>
