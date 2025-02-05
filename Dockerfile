@@ -9,6 +9,7 @@ RUN apt-get install -y \
     fcitx-frontend-all \
     fcitx-ui-classic \
     fcitx-dbus-status \
+    libdbus-1-3 \
     dbus-x11 \
     --no-install-recommends && \
     apt-get clean && \
