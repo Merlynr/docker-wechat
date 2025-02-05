@@ -54,7 +54,7 @@ jobs:
         docker tag temp-image $FULL_IMAGE_NAME:latest
         
         # 推送镜像
-        docker push $FULL_IMAGE_NAME:$VERSION
+        docker push $FULL_IMAGE_NAME:base
         docker push $FULL_IMAGE_NAME:latest
         
         echo "Successfully pushed new version: $VERSION"
