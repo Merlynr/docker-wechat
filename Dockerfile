@@ -1,8 +1,7 @@
 FROM merlynr/docker-wechat:base
 
 # 安装 fcitx 及其依赖项
-RUN apt-get update && \
-    apt-get install -y \
+RUN apt-get install -y \
     curl \
     im-config \
     fcitx \
