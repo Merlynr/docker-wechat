@@ -21,7 +21,7 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/*
 
 # 生成微信图标
-RUN APP_ICON_URL=https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico && 
+RUN APP_ICON_URL=https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico  
 
 #    install_app_icon.sh "$APP_ICON_URL"
     
